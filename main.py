@@ -29,11 +29,8 @@ import writer
 import reminders as rem_module
 
 
-CFG = cfg_module.load()
-RECORDER = rec_module.Recorder(
-    sample_rate=CFG["audio"]["sample_rate"],
-    channels=CFG["audio"]["channels"],
-)
+CFG: dict = {}
+RECORDER: rec_module.Recorder | None = None
 
 _BAR_CHARS = " ▁▂▃▄▅▆▇█"
 
@@ -147,7 +144,11 @@ class VoiceNoteApp(App):
     def on_mount(self):
         self._wave_timer = self.set_interval(0.05, self._update_wave)
         self._elapsed_timer = self.set_interval(0.5, self._update_elapsed)
-        self._log("VoiceNote started. Press [bold]SPACE[/bold] to record.")
+        name = CFG.get("user", {}).get("name", "")
+        if name:
+            self._log(f"Welcome back, [bold]{name}[/bold]")
+        else:
+            self._log("VoiceNote started. Press [bold]SPACE[/bold] to record.")
         self._log(f"Model: [cyan]{CFG['ollama']['model']}[/cyan]")
         self._log(
             f"Whisper: [cyan]{CFG['whisper']['model']}[/cyan]  |  "
@@ -219,7 +220,8 @@ class VoiceNoteApp(App):
     def _process(self, audio):
         try:
             self._set_state("transcribing")
-            self._log("Running Whisper…")
+            backend = CFG["whisper"].get("backend", "whisper")
+            self._log(f"Transcribing via [cyan]{backend}[/cyan]…")
             transcript = transcriber.transcribe(
                 audio,
                 sample_rate=CFG["audio"]["sample_rate"],
@@ -227,6 +229,7 @@ class VoiceNoteApp(App):
                 language=CFG["whisper"]["language"],
                 device=CFG["whisper"]["device"],
                 compute_type=CFG["whisper"]["compute_type"],
+                backend=backend,
             )
             if not transcript:
                 self._log("[yellow]No speech detected.[/yellow]")
@@ -283,8 +286,16 @@ class VoiceNoteApp(App):
 
 
 def main():
-    app = VoiceNoteApp()
-    app.run()
+    global CFG, RECORDER
+    if cfg_module.is_first_run():
+        from onboarding import OnboardingApp
+        OnboardingApp().run()
+    CFG = cfg_module.load()
+    RECORDER = rec_module.Recorder(
+        sample_rate=CFG["audio"]["sample_rate"],
+        channels=CFG["audio"]["channels"],
+    )
+    VoiceNoteApp().run()
 
 
 if __name__ == "__main__":
