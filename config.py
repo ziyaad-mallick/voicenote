@@ -25,7 +25,7 @@ def get_default() -> dict:
             "language": "en",
             "device": "cpu",
             "compute_type": "int8",
-            "backend": "whisper"
+            "backend": "vosk"
         },
         "output": {
             "markdown": True,

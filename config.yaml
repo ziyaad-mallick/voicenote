@@ -15,7 +15,7 @@ whisper:
   language: "en"
   device: "cpu"
   compute_type: "int8"
-  backend: "whisper"   # "whisper" for local, "groq" for Groq API
+  backend: "vosk"   # "vosk" (default, 40MB), "groq" (API key needed), "whisper" (local)
 
 output:
   markdown: true
