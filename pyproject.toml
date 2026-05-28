@@ -1,0 +1,24 @@
+[project]
+name = "voicenote"
+version = "0.1.0"
+description = "On-device audio note-taking with Whisper transcription and Ollama formatting"
+requires-python = ">=3.11"
+dependencies = [
+    "faster-whisper>=1.0.3",
+    "sounddevice>=0.5.0",
+    "textual>=0.80.0",
+    "python-docx>=1.1.0",
+    "pyyaml>=6.0",
+    "winotify>=1.1.0",
+    "numpy>=1.26.0",
+    "scipy>=1.13.0",
+    "requests>=2.31.0",
+    "python-dateutil>=2.9.0",
+]
+
+[project.scripts]
+voicenote = "main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

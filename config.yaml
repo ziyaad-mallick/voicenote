@@ -1,0 +1,25 @@
+notes_dir: "~/Documents/VoiceNotes"
+
+categories:
+  - Projects
+  - Ideas
+  - Uni
+  - Personal
+
+ollama:
+  host: "http://localhost:11434"
+  model: "goekdenizguelmez/JOSIEFIED-Qwen3:latest"
+
+whisper:
+  model: "base"
+  language: "en"
+  device: "cpu"
+  compute_type: "int8"
+
+output:
+  markdown: true
+  docx: false
+
+audio:
+  sample_rate: 16000
+  channels: 1
