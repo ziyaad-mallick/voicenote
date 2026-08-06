@@ -1,5 +1,7 @@
 # voicenote
 
+[![tests](https://github.com/ziyaad-mallick/voicenote/actions/workflows/tests.yml/badge.svg)](https://github.com/ziyaad-mallick/voicenote/actions/workflows/tests.yml)
+
 **Talk. Get a structured note. Nothing leaves the machine.**
 
 Hold space, say what you're thinking, let go. A local ASR model turns it into text, a local LLM turns
@@ -102,4 +104,4 @@ of the pipeline is platform-neutral and the recorder/transcriber/formatter path 
 There's a Flutter port of the same idea for Android in
 [ramble](https://github.com/ziyaad-mallick/ramble), using on-device Gemma instead of Ollama.
 
-MIT.
+MIT. See [LICENSE](LICENSE). Third-party licences: [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
