@@ -1,0 +1,54 @@
+{
+  "n_cases": 1,
+  "n_scored": 0,
+  "n_responded": 0,
+  "fallback_transport": 1,
+  "fallback_parse": 0,
+  "category_coerced": 0,
+  "reminder_counts": {
+    "tp": 0,
+    "fp": 0,
+    "fn": 0
+  },
+  "datetime_breakdown": {
+    "absent": 0,
+    "unparseable_or_past": 0,
+    "future": 0
+  },
+  "per_case": {
+    "ollama-unreachable-01": {
+      "id": "ollama-unreachable-01",
+      "outcome": "fallback_transport"
+    }
+  },
+  "metrics": {
+    "category_accuracy": null,
+    "schema_conformance": null,
+    "fallback_rate": 1.0,
+    "reminder_precision": null,
+    "reminder_recall": null,
+    "datetime_accuracy": null
+  },
+  "mode": "replay",
+  "case_set_hash": "77984f80b082cd0a",
+  "timestamp": "2026-08-26T17:14:21.873520+00:00",
+  "stale": [
+    "deadline-explicit-01: recorded against prompt 36def19b6e79ef04, current prompt is 913bb8738d250a37. The recording cannot tell you anything about the current prompt's behaviour -- re-record with `python -m evals.run --live`.",
+    "deadline-relative-01: recorded against prompt 36def19b6e79ef04, current prompt is 913bb8738d250a37. The recording cannot tell you anything about the current prompt's behaviour -- re-record with `python -m evals.run --live`.",
+    "no-deadline-negative-01: recorded against prompt 36def19b6e79ef04, current prompt is 913bb8738d250a37. The recording cannot tell you anything about the current prompt's behaviour -- re-record with `python -m evals.run --live`.",
+    "no-deadline-negative-02: recorded against prompt 36def19b6e79ef04, current prompt is 913bb8738d250a37. The recording cannot tell you anything about the current prompt's behaviour -- re-record with `python -m evals.run --live`.",
+    "rambling-two-topics-01: recorded against prompt 36def19b6e79ef04, current prompt is 913bb8738d250a37. The recording cannot tell you anything about the current prompt's behaviour -- re-record with `python -m evals.run --live`.",
+    "short-transcript-01: recorded against prompt 36def19b6e79ef04, current prompt is 913bb8738d250a37. The recording cannot tell you anything about the current prompt's behaviour -- re-record with `python -m evals.run --live`.",
+    "short-transcript-02: recorded against prompt 36def19b6e79ef04, current prompt is 913bb8738d250a37. The recording cannot tell you anything about the current prompt's behaviour -- re-record with `python -m evals.run --live`."
+  ],
+  "unlabelled_cases": [
+    "deadline-explicit-01",
+    "deadline-relative-01",
+    "no-deadline-negative-01",
+    "no-deadline-negative-02",
+    "ollama-unreachable-01",
+    "rambling-two-topics-01",
+    "short-transcript-01",
+    "short-transcript-02"
+  ]
+}

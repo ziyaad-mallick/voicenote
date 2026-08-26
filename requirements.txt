@@ -10,3 +10,6 @@ scipy>=1.13.0
 requests>=2.31.0
 python-dateutil>=2.9.0
 keyboard>=0.13.5
+
+# tests (the README tells you to run these, so they install by default)
+pytest>=8.0

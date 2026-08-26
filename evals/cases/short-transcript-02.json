@@ -1,0 +1,19 @@
+{
+  "id": "short-transcript-02",
+  "label_status": "proposed",
+  "transcript": "Call the dentist tomorrow morning.",
+  "expected": {
+    "category": "Personal",
+    "reminders": [
+      {
+        "text": "call the dentist",
+        "datetime_state": "future"
+      }
+    ]
+  },
+  "notes": "Four words plus a date. The minimal positive case - contrast with short-transcript-01, which is the same length with no date.",
+  "recorded": {
+    "prompt_sha": "36def19b6e79ef04",
+    "response": "{\n  \"title\": \"Dentist Appointment\",\n  \"category\": \"Personal\",\n  \"summary\": \"Schedule a dentist appointment for tomorrow morning.\",\n  \"body\": \"**Task**\\\\nCall the dentist tomorrow morning.\",\n  \"tags\": [\"dentist\", \"appointment\", \"tomorrow\", \"task\", \"health\"],\n  \"reminders\": [\n    {\n      \"text\": \"Call the dentist\",\n      \"datetime\": \"tomorrow morning\"\n    }\n  ]\n}"
+  }
+}

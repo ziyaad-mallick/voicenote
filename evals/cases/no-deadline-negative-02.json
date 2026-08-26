@@ -1,0 +1,14 @@
+{
+  "id": "no-deadline-negative-02",
+  "label_status": "proposed",
+  "transcript": "Reminder to self, that Thai place on Cowley Road was genuinely excellent. The one with the green front. Worth going back.",
+  "expected": {
+    "category": "Personal",
+    "reminders": []
+  },
+  "notes": "Adversarial negative. Contains the literal words 'reminder to self' and 'worth going back', which look like an obligation and are not one. No date, no action the user must take. PROPOSED: reasonable people could disagree here - if you think 'go back to the Thai place' IS a reminder, say so and the label flips.",
+  "recorded": {
+    "prompt_sha": "36def19b6e79ef04",
+    "response": "{\n  \"title\": \"Thai Restaurant Cowley Road Excellent\",\n  \"category\": \"Personal\",\n  \"summary\": \"Excellent Thai restaurant on Cowley Road with green front facade deserves a return visit.\",\n  \"body\": \"## Thai Restaurant Reminder\\n\\nThe Thai restaurant located on Cowley Road featuring a green front facade provided an exceptional dining experience. Highly recommended for its quality cuisine and ambiance.\\n\\n**Key Details:**\\n- Located on Cowley Road\\n- Distinctive green front exterior\\n- Excellent food and service\\n- Worth revisiting soon\",\n  \"tags\": [\"thai restaurant\", \"cowley road\", \"excellent food\", \"return visit\", \"reminder\"],\n  \"reminders\": [\n    {\n      \"text\": \"Return to Thai restaurant on Cowley Road\",\n      \"datetime\": \"next Monday 9am\"\n    }\n  ]\n}"
+  }
+}

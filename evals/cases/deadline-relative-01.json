@@ -1,0 +1,23 @@
+{
+  "id": "deadline-relative-01",
+  "label_status": "proposed",
+  "transcript": "Don't forget I need to email the department about the extension request next Monday, and the reading list has to be finalised in two weeks.",
+  "expected": {
+    "category": "Uni",
+    "reminders": [
+      {
+        "text": "email the department about the extension request",
+        "datetime_state": "future"
+      },
+      {
+        "text": "finalise the reading list",
+        "datetime_state": "future"
+      }
+    ]
+  },
+  "notes": "Relative dates. EXPECT THIS TO FAIL, and the failure is a real product bug, not a metric miss: reminders.py parses with dateutil, which does not understand 'next' - 'next Monday 9am' resolves to 09:00 TODAY, which is in the past by mid-morning, which fires the toast immediately. Labelled 'future' because that is what SHOULD happen.",
+  "recorded": {
+    "prompt_sha": "36def19b6e79ef04",
+    "response": "{\n  \"title\": \"Extension Request and Reading List Deadline\",\n  \"category\": \"Uni\",\n  \"summary\": \"Need to email the department for an extension request by next Monday and finalize the reading list within two weeks.\",\n  \"body\": \"### Tasks\\n- Email the department regarding the extension request by **next Monday**.\\n- Finalize the reading list within **two weeks**.\",\n  \"tags\": [\"extension-request\", \"reading-list\", \"deadline\", \"email\", \"university\", \"task\"],\n  \"reminders\": [\n    {\n      \"text\": \"Email the department about the extension request\",\n      \"datetime\": \"next Monday\"\n    },\n    {\n      \"text\": \"Finalize the reading list\",\n      \"datetime\": \"in two weeks\"\n    }\n  ]\n}"
+  }
+}

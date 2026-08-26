@@ -8,11 +8,20 @@ from pathlib import Path
 
 import numpy as np
 
-import vosk
-
-vosk.SetLogLevel(-1)
-
+# `vosk` is imported inside the functions that need it, not at module scope.
+# It is a 52MB native package, and importing it here would make it a hard
+# requirement of anything that touches this module -- including the test suite,
+# which mocks every ASR boundary and never loads a model. Deferring it keeps
+# `pytest` runnable without the ASR stack installed.
 _vosk_model = None
+
+
+def _vosk():
+    """Import vosk on first use and quiet its logger."""
+    import vosk
+
+    vosk.SetLogLevel(-1)
+    return vosk
 
 
 def ensure_vosk_model(progress_callback=None) -> Path:
@@ -50,17 +59,17 @@ def ensure_vosk_model(progress_callback=None) -> Path:
     return model_dir
 
 
-def _get_vosk_model() -> vosk.Model:
+def _get_vosk_model():
     global _vosk_model
     if _vosk_model is None:
         model_dir = ensure_vosk_model()
-        _vosk_model = vosk.Model(str(model_dir))
+        _vosk_model = _vosk().Model(str(model_dir))
     return _vosk_model
 
 
 def _transcribe_vosk(audio: np.ndarray, sample_rate: int) -> str:
     model = _get_vosk_model()
-    recognizer = vosk.KaldiRecognizer(model, sample_rate)
+    recognizer = _vosk().KaldiRecognizer(model, sample_rate)
 
     audio_bytes = (audio * 32767).astype(np.int16).tobytes()
     recognizer.AcceptWaveform(audio_bytes)

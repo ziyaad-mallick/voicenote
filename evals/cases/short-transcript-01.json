@@ -1,0 +1,14 @@
+{
+  "id": "short-transcript-01",
+  "label_status": "proposed",
+  "transcript": "Buy milk.",
+  "expected": {
+    "category": "Personal",
+    "reminders": []
+  },
+  "notes": "Three words. Tests that a tiny input does not produce a hallucinated title, summary and tag set. PROPOSED and genuinely uncertain: 'buy milk' is an action with no date. Is it a reminder with datetime_state 'absent', or not a reminder at all? An 'absent' datetime fires a toast immediately (reminders.py:61), so labelling it a reminder means asking to be interrupted now. I have labelled it NOT a reminder on that basis. Your call.",
+  "recorded": {
+    "prompt_sha": "36def19b6e79ef04",
+    "response": "{\n  \"title\": \"Buy Milk\",\n  \"category\": \"Personal\",\n  \"summary\": \"Reminder to purchase milk from the store.\",\n  \"body\": \"# Tasks\\n- Purchase milk from the store.\",\n  \"tags\": [\"shopping\", \"groceries\", \"milk\", \"todo\"],\n  \"reminders\": []\n}"
+  }
+}

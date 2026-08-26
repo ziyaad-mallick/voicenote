@@ -5,8 +5,10 @@ description = "On-device audio note-taking with Whisper transcription and Ollama
 requires-python = ">=3.11"
 license = { file = "LICENSE" }
 dependencies = [
+    "vosk>=0.3.45",
     "faster-whisper>=1.0.3",
     "sounddevice>=0.5.0",
+    "keyboard>=0.13.5",
     "textual>=0.80.0",
     "python-docx>=1.1.0",
     "pyyaml>=6.0",
@@ -34,4 +36,5 @@ pythonpath = ["."]
 testpaths = ["tests"]
 markers = [
     "hardware: needs a real microphone/soundcard; excluded from CI",
+    "live: calls a real Ollama and re-records eval fixtures; excluded from CI",
 ]

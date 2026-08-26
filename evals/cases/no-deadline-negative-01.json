@@ -1,0 +1,14 @@
+{
+  "id": "no-deadline-negative-01",
+  "label_status": "proposed",
+  "transcript": "I've been thinking about why the onboarding flow feels wrong. It's not the number of steps, it's that step three asks for something the user has no reason to care about yet. You have to earn the right to ask for a phone number.",
+  "expected": {
+    "category": "Ideas",
+    "reminders": []
+  },
+  "notes": "THE most important case in the set. Pure reflection, zero obligations. Any reminder extracted here is a false positive, and a false positive fires a Windows toast at the user. If precision drops, it drops here first.",
+  "recorded": {
+    "prompt_sha": "36def19b6e79ef04",
+    "response": "{\n  \"title\": \"Onboarding Flow: Early Phone Number Step\",\n  \"category\": \"Ideas\",\n  \"summary\": \"The onboarding flow feels wrong because step three asks for a phone number too early, making users lose interest.\",\n  \"body\": \"## Key Insight\\nThe onboarding flow feels wrong not due to the number of steps, but because step three asks for a phone number prematurely. Users shouldn't be required to provide a phone number until they've earned the right to do so.\\n\\n### Problem\\nRequesting a phone number too early in the process creates friction. Users have no context or incentive to care about the phone number at this stage.\\n\\n### Solution\\nDelay asking for a phone number until later steps when users have established value in the product. Earn the right to collect sensitive data incrementally.\",\n  \"tags\": [\"onboarding\", \"flow\", \"phone-number\", \"user-experience\", \"steps\", \"early-request\"],\n  \"reminders\": []\n}"
+  }
+}

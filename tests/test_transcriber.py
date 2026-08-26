@@ -15,6 +15,7 @@ No real model is ever loaded and no network call is ever made — every
 backend implementation is replaced at its boundary (the vosk/faster_whisper
 model classes, or the private `_transcribe_*` functions).
 """
+from types import SimpleNamespace
 from pathlib import Path
 
 import numpy as np
@@ -43,7 +44,11 @@ def test_vosk_model_is_loaded_once_across_two_calls(monkeypatch):
         def __init__(self, path):
             init_calls.append(path)
 
-    monkeypatch.setattr(t.vosk, "Model", FakeVoskModel)
+    # `vosk` is imported lazily by t._vosk(), so there is no module-level
+    # attribute to patch -- stand in for the module itself.
+    monkeypatch.setattr(
+        t, "_vosk", lambda: SimpleNamespace(Model=FakeVoskModel)
+    )
 
     first = t._get_vosk_model()
     second = t._get_vosk_model()
@@ -54,7 +59,10 @@ def test_vosk_model_is_loaded_once_across_two_calls(monkeypatch):
 
 
 def test_whisper_model_is_loaded_once_across_two_calls(monkeypatch):
-    import faster_whisper
+    # This one patches a class ON the real package, so unlike the vosk test it
+    # cannot run without faster_whisper present. Skip rather than fail, so the
+    # suite stays runnable without the ASR stack installed.
+    faster_whisper = pytest.importorskip("faster_whisper")
 
     init_calls = []
 

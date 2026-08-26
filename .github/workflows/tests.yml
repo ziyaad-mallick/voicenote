@@ -16,9 +16,14 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-          pip install pytest
+        run: pip install -r requirements.txt
 
       - name: Run tests
-        run: pytest -m "not hardware"
+        run: pytest -m "not hardware and not live"
+
+      # Runs in replay mode against recorded Ollama responses, so it needs no
+      # model and no network. It gates the deterministic half only -- the parser,
+      # the fallback paths and the scoring arithmetic. It cannot evaluate a
+      # prompt change; see evals/README.md for why, and for what does.
+      - name: Eval (replay)
+        run: python -m evals.run

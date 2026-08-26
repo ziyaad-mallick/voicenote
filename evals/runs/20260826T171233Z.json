@@ -1,0 +1,40 @@
+{
+  "n_cases": 8,
+  "n_scored": 7,
+  "n_responded": 7,
+  "fallback_transport": 1,
+  "fallback_parse": 0,
+  "category_coerced": 0,
+  "reminder_counts": {
+    "tp": 6,
+    "fp": 1,
+    "fn": 2
+  },
+  "datetime_breakdown": {
+    "absent": 0,
+    "unparseable_or_past": 5,
+    "future": 1
+  },
+  "metrics": {
+    "category_accuracy": 1.0,
+    "schema_conformance": 1.0,
+    "fallback_rate": 0.125,
+    "reminder_precision": 0.8571,
+    "reminder_recall": 0.75,
+    "datetime_accuracy": 0.1667
+  },
+  "mode": "replay",
+  "case_set_hash": "77984f80b082cd0a",
+  "timestamp": "2026-08-26T17:12:33.472840+00:00",
+  "stale": [],
+  "unlabelled_cases": [
+    "deadline-explicit-01",
+    "deadline-relative-01",
+    "no-deadline-negative-01",
+    "no-deadline-negative-02",
+    "ollama-unreachable-01",
+    "rambling-two-topics-01",
+    "short-transcript-01",
+    "short-transcript-02"
+  ]
+}
