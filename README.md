@@ -108,18 +108,21 @@ imported lazily so the tests run without the ASR stack present.
 
 The evals are the more interesting half. `evals/` measures the transcript → note path:
 category accuracy, schema conformance, fallback rate split by cause, and reminder
-precision and recall reported separately. The first live run scored **1.00 precision and
-1.00 recall on reminder extraction and 0.00 on datetime accuracy** — the model finds
-exactly the right obligations and attaches a date to each one that fires a notification the
-instant the note is saved, because it hallucinated a year three years in the past. Perfect
-precision, perfect recall, broken feature.
+precision and recall reported separately. The first live run scored **0.86 precision and
+0.67 recall on reminder extraction, and 0.17 on datetime accuracy** — five of the six
+reminders it got right fire a notification the instant the note is saved rather than when
+the thing is due, because the model hallucinates a year three years in the past when the
+transcript does not give one. It also invented an obligation from a note about a restaurant
+being good, and scheduled it for next Monday at 9am.
 
 That result is the argument for how the metrics are shaped, and
 [evals/README.md](evals/README.md) is the long version: why fallbacks are excluded from
 precision, why counters beat per-case averages, and why a replayed response can gate the
 parser but can never evaluate a prompt change.
 
-**The case labels are proposals, not signed off.** The runner says so on every run.
+Eight cases, labels signed off. That is a regression suite, not a benchmark: enough to
+demonstrate the method and catch a parser regression, not enough to support a claim about
+how good the model is.
 
 ## Status
 

@@ -1,6 +1,6 @@
 {
   "id": "short-transcript-02",
-  "label_status": "proposed",
+  "label_status": "approved",
   "transcript": "Call the dentist tomorrow morning.",
   "expected": {
     "category": "Personal",

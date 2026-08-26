@@ -1,6 +1,6 @@
 {
   "id": "deadline-relative-01",
-  "label_status": "proposed",
+  "label_status": "approved",
   "transcript": "Don't forget I need to email the department about the extension request next Monday, and the reading list has to be finalised in two weeks.",
   "expected": {
     "category": "Uni",

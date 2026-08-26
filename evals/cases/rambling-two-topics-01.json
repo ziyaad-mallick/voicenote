@@ -1,6 +1,6 @@
 {
   "id": "rambling-two-topics-01",
-  "label_status": "proposed",
+  "label_status": "approved",
   "transcript": "Okay so two things. First the deployment, the staging box is still on the old node version and that's why the build broke on Thursday, someone needs to bump it, probably me, before the demo on the 12th. Second, completely unrelated, I keep meaning to ask Priya whether she's still up for the climbing thing, and I should book the car for the weekend of the 20th if she is.",
   "expected": {
     "category": "Projects",

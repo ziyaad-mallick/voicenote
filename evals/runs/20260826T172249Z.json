@@ -1,5 +1,20 @@
 {
-  "case_set_hash": "89e2610c9cb5c8c0",
+  "n_cases": 8,
+  "n_scored": 7,
+  "n_responded": 7,
+  "fallback_transport": 1,
+  "fallback_parse": 0,
+  "category_coerced": 0,
+  "reminder_counts": {
+    "tp": 6,
+    "fp": 1,
+    "fn": 3
+  },
+  "datetime_breakdown": {
+    "absent": 0,
+    "unparseable_or_past": 5,
+    "future": 1
+  },
   "per_case": {
     "deadline-explicit-01": {
       "id": "deadline-explicit-01",
@@ -89,5 +104,18 @@
         "fn": 0
       }
     }
-  }
+  },
+  "metrics": {
+    "category_accuracy": 1.0,
+    "schema_conformance": 1.0,
+    "fallback_rate": 0.125,
+    "reminder_precision": 0.8571,
+    "reminder_recall": 0.6667,
+    "datetime_accuracy": 0.1667
+  },
+  "mode": "replay",
+  "case_set_hash": "89e2610c9cb5c8c0",
+  "timestamp": "2026-08-26T17:22:49.210913+00:00",
+  "stale": [],
+  "unlabelled_cases": []
 }

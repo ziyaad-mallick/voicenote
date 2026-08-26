@@ -1,6 +1,6 @@
 {
   "id": "deadline-explicit-01",
-  "label_status": "proposed",
+  "label_status": "approved",
   "transcript": "Right, note for the Kepler project. I need to send the invoice to Marcus by Friday the 5th of September, and before that I should double check the hours in the timesheet because I think I undercounted the Tuesday session.",
   "expected": {
     "category": "Projects",

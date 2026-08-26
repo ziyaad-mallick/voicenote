@@ -15,12 +15,12 @@ pytest tests/test_evals.py           # the CI gate
 The first live run against `goekdenizguelmez/JOSIEFIED-Qwen3` produced this:
 
 ```
-reminder precision   : 1.000   tp=3 fp=0 fn=0
-reminder recall      : 1.000
-datetime accuracy    : 0.000   {'absent': 0, 'unparseable_or_past': 3, 'future': 0}
+reminder precision   : 0.857   tp=6 fp=1 fn=3
+reminder recall      : 0.667
+datetime accuracy    : 0.167   {'absent': 0, 'unparseable_or_past': 5, 'future': 1}
 ```
 
-Perfect precision, perfect recall, and the feature is broken. The model finds
+Five of the six reminders it got *right* fire at the wrong time. The model finds
 exactly the right obligations and attaches a datetime to each one that **fires a
 Windows toast the instant the note is saved**, because `reminders.py` fires
 immediately whenever the delay computes below one second — which covers a
@@ -31,12 +31,12 @@ Two separate causes, both real:
 - **Hallucinated year.** The transcript says "Friday the 5th of September" and
   names no year. The model emitted `2023-09-05T00:00:00Z`. It is 2026, so the
   reminder is three years overdue and fires on save.
-- **Unparseable prose.** `"tomorrow morning"` is not something
+- **Unparseable prose.** `"tomorrow morning"` and `"in two weeks"` are not things
   `dateutil.parser.parse(..., fuzzy=True)` resolves, and `reminders.py` swallows
   the exception and leaves the delay at zero.
 
 This is the entire argument for the metric design below. Had the case schema
-asserted `has_datetime: true`, as originally specified, **all three of these
+asserted `has_datetime: true`, as originally specified, **all five of these
 would have scored as correct** — they do all have a datetime. The bug is not
 whether a datetime is present; it is whether the datetime is one the scheduler
 can use.
@@ -94,22 +94,27 @@ match** against `evals/baseline.json` rather than an aggregate threshold. With
 this few cases a threshold would either flake on one case flipping or gate
 nothing at all.
 
-## Case status: PROPOSED, not approved
+## Case status: approved
 
-Every case in `cases/` carries `"label_status": "proposed"`. **These labels have
-not been signed off, so the numbers above are the model measured against a
-guess, not a result.** The runner prints a warning saying so on every run, and
-`is_labelled` gates on `approved`.
+All 8 cases carry `"label_status": "approved"` — signed off 2026-08-26. Until
+they were, the runner printed a warning on every run and treated the numbers as
+the model measured against a guess. `is_labelled` gates on `approved`, and any
+new case starts at `proposed`.
 
-Several labels are genuinely contestable and are flagged in each case's `notes`:
+Three labels were genuinely contestable and were decided rather than assumed:
 
-- `short-transcript-01` ("Buy milk.") — an action with no date. Labelled *not* a
-  reminder, because an absent datetime fires a toast immediately, so calling it
-  a reminder is asking to be interrupted now.
-- `no-deadline-negative-02` — contains the literal words "reminder to self" and
-  "worth going back" and is labelled as having no reminders.
-- `rambling-two-topics-01` — half Projects, half Personal, and only one category
-  label is allowed.
+- `short-transcript-01` ("Buy milk.") — **is** a reminder, with
+  `datetime_state: absent`. Note the consequence: `reminders.py` fires a dateless
+  reminder immediately, so the approved label and the current behaviour
+  disagree. That gap is a product bug this case now pins down. Labelling it
+  *not* a reminder would have hidden the bug by defining it away.
+- `no-deadline-negative-02` — **not** a reminder, despite containing the literal
+  words "reminder to self" and "worth going back". So the model inventing
+  "Return to Thai restaurant" and scheduling it for next Monday 9am stays a
+  false positive, which is what holds precision at 0.857.
+- `rambling-two-topics-01` — **Projects**, because the deadline-bearing half is
+  the work half. The single-category schema is a real limitation here and this
+  case records it.
 
 ## What is not measured here
 
@@ -120,5 +125,5 @@ Several labels are genuinely contestable and are flagged in each case's `notes`:
 - **Anything at n=8.** Eight cases is a regression smoke suite. It is enough to
   demonstrate the method and to catch a parser regression; it is not enough to
   support a claim about how good the model is. The confidence interval on a
-  precision figure over three true positives is wide enough to swallow any
+  precision figure over six true positives is wide enough to swallow any
   prompt change worth detecting.

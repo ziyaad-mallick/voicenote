@@ -1,6 +1,6 @@
 {
   "id": "no-deadline-negative-01",
-  "label_status": "proposed",
+  "label_status": "approved",
   "transcript": "I've been thinking about why the onboarding flow feels wrong. It's not the number of steps, it's that step three asks for something the user has no reason to care about yet. You have to earn the right to ask for a phone number.",
   "expected": {
     "category": "Ideas",

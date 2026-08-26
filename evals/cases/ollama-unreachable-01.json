@@ -1,6 +1,6 @@
 {
   "id": "ollama-unreachable-01",
-  "label_status": "proposed",
+  "label_status": "approved",
   "transcript": "Quick note about the grant application, the deadline moved to the 30th and I need to rewrite the methods section before then.",
   "expected": {
     "category": "Uni",
