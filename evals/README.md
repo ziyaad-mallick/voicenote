@@ -116,6 +116,17 @@ Three labels were genuinely contestable and were decided rather than assumed:
   the work half. The single-category schema is a real limitation here and this
   case records it.
 
+## Run artifacts
+
+Every run writes `evals/runs/<iso>.json`, and `--diff` compares the two most recent
+— refusing when the case-set hash differs between them, because adding a case
+shifts every aggregate and the difference would be new coverage reported as a
+regression.
+
+That directory is gitignored. The committed record is `evals/baseline.json`; run
+history is local working state, and committing a file per run (CI included) would
+be noise.
+
 ## What is not measured here
 
 - **Audio → note.** This measures transcript → note. Users experience speech,

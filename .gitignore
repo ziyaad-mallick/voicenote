@@ -5,3 +5,8 @@ __pycache__/
 .python-version
 *.wav
 *.mp3
+
+# eval run artifacts: every `python -m evals.run` writes one, including in CI.
+# The committed record is evals/baseline.json; run history is local working
+# state for `--diff`.
+evals/runs/
