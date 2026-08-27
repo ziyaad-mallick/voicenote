@@ -13,7 +13,7 @@
   },
   "notes": "Four words plus a date. The minimal positive case - contrast with short-transcript-01, which is the same length with no date.",
   "recorded": {
-    "prompt_sha": "36def19b6e79ef04",
-    "response": "{\n  \"title\": \"Dentist Appointment\",\n  \"category\": \"Personal\",\n  \"summary\": \"Schedule a dentist appointment for tomorrow morning.\",\n  \"body\": \"**Task**\\\\nCall the dentist tomorrow morning.\",\n  \"tags\": [\"dentist\", \"appointment\", \"tomorrow\", \"task\", \"health\"],\n  \"reminders\": [\n    {\n      \"text\": \"Call the dentist\",\n      \"datetime\": \"tomorrow morning\"\n    }\n  ]\n}"
+    "prompt_sha": "98e342e5ac500165",
+    "response": "{\n  \"title\": \"Dentist Appointment\",\n  \"category\": \"Personal\",\n  \"summary\": \"Reminder to call the dentist tomorrow morning.\",\n  \"body\": \"## Task\\nCall the dentist tomorrow morning.\\n\\n### Notes\\n- Ensure to schedule the appointment before 9 AM.\\n- Confirm availability if needed.\",\n  \"tags\": [\"dentist\", \"appointment\", \"reminder\"],\n  \"reminders\": [\n    {\n      \"text\": \"Call the dentist\",\n      \"datetime\": \"2026-08-28T09:00:00+05:00\"\n    }\n  ]\n}"
   }
 }

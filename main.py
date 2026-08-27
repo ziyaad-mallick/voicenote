@@ -264,14 +264,29 @@ class VoiceNoteApp(App):
             self._update_last_note_label(note, md_path)
 
             if note.get("reminders"):
-                rem_module.schedule_reminders(note["reminders"], note["title"])
-                for r in note["reminders"]:
+                # The returned states are what happened, not what was asked for:
+                # an undated or unreadable datetime schedules nothing, and
+                # logging "Reminder set" for one of those would be a lie the
+                # user only discovers when the toast never comes.
+                outcomes = rem_module.schedule_reminders(
+                    note["reminders"], note["title"]
+                )
+                for r, o in zip(note["reminders"], outcomes):
                     # .get, not [] -- `_parse` validates that the `reminders`
                     # key exists, never the shape of the items inside it, and a
                     # model omitting "datetime" would otherwise raise here,
                     # after the note was already written to disk.
                     when = r.get("datetime") or "no date given"
-                    self._log(f"Reminder set: {r.get('text', 'Reminder')} @ {when}")
+                    text = r.get("text", "Reminder")
+                    if o["state"] == rem_module.SCHEDULED:
+                        self._log(f"Reminder set: {text} @ {when}")
+                    elif o["state"] == rem_module.FIRED:
+                        self._log(f"Reminder (already due): {text} @ {when}")
+                    else:
+                        self._log(
+                            f"Reminder NOT scheduled ({o['state']}): {text} "
+                            f"@ {when} -- kept in the note only"
+                        )
 
             self._set_state("done")
 

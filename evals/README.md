@@ -41,6 +41,76 @@ would have scored as correct** — they do all have a datetime. The bug is not
 whether a datetime is present; it is whether the datetime is one the scheduler
 can use.
 
+## What happened when it was fixed (2026-08-27)
+
+The finding above had two causes at two different layers, and each needed its own fix.
+
+**Cause 1, the model: no date anchor.** `formatter._SYSTEM` invited prose
+(`"ISO 8601 or descriptive like 'next Monday 9am'"`) and never told the model
+what day it was. It filled the gap with a year in the past. The prompt now
+carries `{now}` and requires an absolute ISO-8601 timestamp with an explicit
+year and offset.
+
+`{now}` is substituted in `formatter.format_note`, **not** in
+`harness.prompt_hash` -- the hash covers the template with the placeholder still
+literal. Substituting a live timestamp into the hashed string would re-stale
+every recording every second and replay would never score anything again.
+
+**Cause 2, the product: a zero delay reached three ways.** `reminders.py`
+computed `delay = 0` for an absent datetime, an unparseable one, and a past one
+alike, then fired on `delay < 1`. It now classifies -- `absent`, `unparseable`,
+`past`, `future` -- schedules only `future`, toasts only `past`, and stays
+silent for the first two. Nothing is lost: `writer.py` records every reminder in
+the note regardless.
+
+Measured on this machine, same 8 cases, `goekdenizguelmez/JOSIEFIED-Qwen3`:
+
+| | before | after |
+|---|---|---|
+| datetime accuracy | 0.250 | **0.875** |
+| reminder precision | 0.800 (4tp/1fp/2fn) | **1.000** (8tp/0fp/1fn) |
+| reminder recall | 0.667 | **0.889** |
+| category accuracy | 1.000 | **0.857** |
+| fallback rate | 0.250 (2 transport) | 0.125 (1 transport) |
+| n_scored | 6 | 7 |
+
+The before column is a live run taken the same morning, not the figures at the
+top of this file -- those came from a run with a different fallback count, and
+comparing across different `n_scored` would be comparing two different
+denominators.
+
+### The number went up and the metric went blind
+
+This is the part worth reading twice. `datetime_state` has three states and
+`future` is one of them, so it answers "can the scheduler use this string" --
+which was the right question while the answer was usually "no". It was never
+able to answer "is this the right moment," and now that every datetime parses,
+that is the only question left.
+
+It is not academic. Today is Thursday 2026-08-27, and on `deadline-relative-01`:
+
+| transcript | model emitted | correct | scored |
+|---|---|---|---|
+| "next Monday" | 2026-08-30 (a **Sunday**) | 2026-08-31 | `future` = correct |
+| "in two weeks" | 2026-09-14 | 2026-09-10 | `future` = correct |
+
+Both are wrong by days. Both score as correct. **0.875 is an honest measurement
+of a question that stopped being the interesting one the moment the fix landed.**
+The next thing this harness needs is date-exactness scored against a labelled
+moment, with a tolerance, and until it has that the datetime figure should be
+read as "schedulable", never as "right".
+
+### The regression, named
+
+Category accuracy fell 1.000 -> 0.857: `no-deadline-negative-01` moved from
+`Ideas` to `Projects`. The added prompt text is all deadlines, tasks and
+scheduling, and the plausible reading is that it tilted a product reflection
+toward the work category. Two things keep it from being alarming and neither
+makes it disappear: at n=7 a single case is 14 points, and `Ideas` vs
+`Projects` for "why the onboarding flow feels wrong" is the most genuinely
+contestable label in the set. What matters is that the case still returns
+`reminders: []`, which is the thing it exists to protect.
+
 ## The four numbers, and why they are shaped this way
 
 | Metric | Denominator | Why not simpler |
@@ -133,6 +203,9 @@ be noise.
   and ASR errors propagate into what looks like LLM failure. Nothing here
   separates those.
 - **Model quality in CI.** See replay, above.
+- **Whether a datetime is the *correct* moment.** Only whether the scheduler can
+  use it. See "the number went up and the metric went blind" above -- this is
+  now the largest known gap in the harness.
 - **Anything at n=8.** Eight cases is a regression smoke suite. It is enough to
   demonstrate the method and to catch a parser regression; it is not enough to
   support a claim about how good the model is. The confidence interval on a

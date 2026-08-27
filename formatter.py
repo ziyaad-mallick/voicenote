@@ -16,6 +16,8 @@ Returns a dict:
 
 import json
 import re
+from datetime import datetime
+
 import requests
 
 
@@ -28,9 +30,20 @@ structured note in JSON with these exact keys:
 - body: the note content formatted as clean Markdown (use headings, bullets,
   code blocks where appropriate). Expand shorthand, fix grammar, keep ideas intact.
 - tags: list of 3-6 lowercase keyword strings
-- reminders: list of objects with "text" (what to do) and "datetime" (ISO 8601
-  or descriptive like "next Monday 9am"). Only include if the transcript
-  explicitly mentions a date, deadline, or task. Otherwise empty list.
+- reminders: list of objects with "text" (what to do) and "datetime".
+  Only include if the transcript explicitly mentions a date, deadline, or
+  task. Otherwise empty list.
+
+The current date and time is {now}. Resolve every relative expression
+("tomorrow", "next Monday", "in two weeks", "Friday the 5th") against it.
+
+"datetime" MUST be an absolute ISO-8601 timestamp with an explicit year and
+UTC offset, for example "2026-09-05T09:00:00+05:00". Never reply with prose
+like "next Monday 9am" -- the scheduler cannot read it, and a reminder it
+cannot read is silently dropped. If the transcript names a day but no year,
+pick the next occurrence at or after the current date; never a past year. If
+it names no time of day, use 09:00. If the transcript truly fixes no moment,
+omit the "datetime" key rather than inventing one.
 
 Reply with JSON only, no prose outside the JSON block.\
 """
@@ -41,8 +54,17 @@ def format_note(
     categories: list[str],
     ollama_host: str = "http://localhost:11434",
     model: str = "goekdenizguelmez/JOSIEFIED-Qwen3:latest",
+    now: datetime | None = None,
 ) -> dict:
-    system = _SYSTEM.replace("{categories}", ", ".join(categories))
+    # {now} is substituted HERE and deliberately NOT in evals.harness.prompt_hash,
+    # which hashes the template with the placeholder still literal. That keeps the
+    # hash stable across runs while still changing when the prompt itself changes.
+    # Substituting a live timestamp into the hashed string would re-stale every
+    # recording every second, and replay would never score anything again.
+    stamp = (now or datetime.now().astimezone()).strftime("%Y-%m-%dT%H:%M:%S%z")
+    system = _SYSTEM.replace("{categories}", ", ".join(categories)).replace(
+        "{now}", stamp
+    )
     payload = {
         "model": model,
         "messages": [

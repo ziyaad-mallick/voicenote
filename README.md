@@ -108,12 +108,22 @@ imported lazily so the tests run without the ASR stack present.
 
 The evals are the more interesting half. `evals/` measures the transcript → note path:
 category accuracy, schema conformance, fallback rate split by cause, and reminder
-precision and recall reported separately. The first live run scored **0.86 precision and
-0.67 recall on reminder extraction, and 0.17 on datetime accuracy** — five of the six
-reminders it got right fire a notification the instant the note is saved rather than when
-the thing is due, because the model hallucinates a year three years in the past when the
-transcript does not give one. It also invented an obligation from a note about a restaurant
-being good, and scheduled it for next Monday at 9am.
+precision and recall reported separately.
+
+The first live run scored **0.25 datetime accuracy** — the reminders the model got right
+fired a notification the instant the note was saved rather than when the thing was due.
+Two causes at two layers: the prompt never told the model what day it was, so it
+hallucinated a year in the past; and `reminders.py` reached a zero delay three different
+ways (absent, unparseable, past) and fired on all of them. Both are now fixed —
+**datetime accuracy 0.25 → 0.875, reminder precision 0.80 → 1.00, recall 0.67 → 0.89**,
+against a category-accuracy regression of 1.00 → 0.857 that
+[evals/README.md](evals/README.md) names rather than buries.
+
+The more useful result is that **the headline number went up and the metric went blind**:
+`datetime_state` answers "can the scheduler use this string", not "is this the right
+moment". The model now emits `2026-08-30` for "next Monday" — a Sunday, and the wrong
+one — and it scores as correct. Date-exactness scoring is the next thing this harness
+needs.
 
 That result is the argument for how the metrics are shaped, and
 [evals/README.md](evals/README.md) is the long version: why fallbacks are excluded from

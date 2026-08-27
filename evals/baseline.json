@@ -8,9 +8,9 @@
       "category_expected": "Projects",
       "category_correct": true,
       "reminders": {
-        "tp": 1,
+        "tp": 2,
         "fp": 0,
-        "fn": 1
+        "fn": 0
       }
     },
     "deadline-relative-01": {
@@ -28,9 +28,9 @@
     "no-deadline-negative-01": {
       "id": "no-deadline-negative-01",
       "outcome": "scored",
-      "category": "Ideas",
+      "category": "Projects",
       "category_expected": "Ideas",
-      "category_correct": true,
+      "category_correct": false,
       "reminders": {
         "tp": 0,
         "fp": 0,
@@ -45,7 +45,7 @@
       "category_correct": true,
       "reminders": {
         "tp": 0,
-        "fp": 1,
+        "fp": 0,
         "fn": 0
       }
     },
@@ -72,9 +72,9 @@
       "category_expected": "Personal",
       "category_correct": true,
       "reminders": {
-        "tp": 0,
+        "tp": 1,
         "fp": 0,
-        "fn": 1
+        "fn": 0
       }
     },
     "short-transcript-02": {
