@@ -62,7 +62,7 @@ def format_note(
         resp.raise_for_status()
         content = resp.json()["message"]["content"]
     except Exception as e:
-        return _fallback(transcript, categories, str(e))
+        return _fallback(transcript, categories, str(e), kind="transport")
 
     return _parse(content, transcript, categories)
 
@@ -78,12 +78,23 @@ def _parse(content: str, transcript: str, categories: list[str]) -> dict:
                 raise ValueError(f"Missing key: {key}")
         if data["category"] not in categories:
             data["category"] = categories[0]
+            # Flagged, not silent: without this, a model returning nonsense
+            # scores as a correct `categories[0]` prediction and category
+            # accuracy measures the coercion instead of the model.
+            data["_category_coerced"] = True
         return data
     except Exception:
-        return _fallback(transcript, categories, "parse error")
+        return _fallback(transcript, categories, "parse error", kind="parse")
 
 
-def _fallback(transcript: str, categories: list[str], reason: str) -> dict:
+def _fallback(transcript: str, categories: list[str], reason: str, kind: str) -> dict:
+    """Raw transcript, preserved, when the LLM path could not produce a note.
+
+    `kind` is the machine-readable discriminator: "transport" when the request
+    never came back, "parse" when it did but the body was not usable. They are
+    different failures with different fixes, and `reason` alone cannot separate
+    them -- it carries free-form exception text in the transport case.
+    """
     return {
         "title": transcript[:60].strip() or "Untitled Note",
         "category": categories[0],
@@ -92,4 +103,5 @@ def _fallback(transcript: str, categories: list[str], reason: str) -> dict:
         "tags": [],
         "reminders": [],
         "_fallback_reason": reason,
+        "_fallback_kind": kind,
     }

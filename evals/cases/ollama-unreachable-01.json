@@ -1,0 +1,14 @@
+{
+  "id": "ollama-unreachable-01",
+  "label_status": "approved",
+  "transcript": "Quick note about the grant application, the deadline moved to the 30th and I need to rewrite the methods section before then.",
+  "expected": {
+    "category": "Uni",
+    "reminders": []
+  },
+  "notes": "Ollama down. Asserts the fallback fires and the raw transcript survives. expected.reminders is [] because _fallback returns [] by construction - this case is scored for FALLBACK BEHAVIOUR, not for extraction quality, and the runner excludes it from precision/recall so it cannot poison them.",
+  "recorded": {
+    "prompt_sha": "TRANSPORT",
+    "transport_error": "HTTPConnectionPool(host='localhost', port=11434): Max retries exceeded"
+  }
+}

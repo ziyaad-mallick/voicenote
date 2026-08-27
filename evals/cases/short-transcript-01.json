@@ -1,0 +1,19 @@
+{
+  "id": "short-transcript-01",
+  "label_status": "approved",
+  "transcript": "Buy milk.",
+  "expected": {
+    "category": "Personal",
+    "reminders": [
+      {
+        "text": "buy milk",
+        "datetime_state": "absent"
+      }
+    ]
+  },
+  "notes": "Three words. Tests that a tiny input does not produce a hallucinated title, summary and tag set. SIGNED OFF by Ziyaad: this IS a reminder, with datetime_state 'absent'. Note the consequence -- reminders.py fires a dateless reminder immediately (delay computes to 0), so the correct label and the current behaviour disagree. That gap is a product bug this case now pins down, not a labelling error.",
+  "recorded": {
+    "prompt_sha": "36def19b6e79ef04",
+    "response": "{\n  \"title\": \"Buy Milk\",\n  \"category\": \"Personal\",\n  \"summary\": \"Reminder to purchase milk from the store.\",\n  \"body\": \"# Tasks\\n- Purchase milk from the store.\",\n  \"tags\": [\"shopping\", \"groceries\", \"milk\", \"todo\"],\n  \"reminders\": []\n}"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "id": "rambling-two-topics-01",
+  "label_status": "approved",
+  "transcript": "Okay so two things. First the deployment, the staging box is still on the old node version and that's why the build broke on Thursday, someone needs to bump it, probably me, before the demo on the 12th. Second, completely unrelated, I keep meaning to ask Priya whether she's still up for the climbing thing, and I should book the car for the weekend of the 20th if she is.",
+  "expected": {
+    "category": "Projects",
+    "reminders": [
+      {
+        "text": "bump the staging node version",
+        "datetime_state": "future"
+      },
+      {
+        "text": "ask Priya about climbing",
+        "datetime_state": "absent"
+      },
+      {
+        "text": "book the car",
+        "datetime_state": "future"
+      }
+    ]
+  },
+  "notes": "Two unrelated topics in one note. Tests whether the model drops the second half. PROPOSED and contestable on two counts: (1) the category, since this is half Projects and half Personal and only one label is allowed; (2) whether 'ask Priya' is a reminder at all given it has no date - I labelled it 'absent' rather than dropping it, which means the model is expected to extract it AND expected to leave the datetime empty.",
+  "recorded": {
+    "prompt_sha": "36def19b6e79ef04",
+    "response": "{\n  \"title\": \"Deployment & Climbing Plans\",\n  \"category\": \"Projects\",\n  \"summary\": \"Fix Node version before demo on 12th; book car for climbing trip on 20th.\",\n  \"body\": \"### Deployment Issue\\n- Staging box uses old Node version causing build break on Thursday\\n- Need to **bump Node version** before demo on **2023-12-12**\\n\\n### Climbing Trip\\n- Ask Priya if she's still up for the climbing trip\\n- Book car for weekend of **2023-12-20** if confirmed\",\n  \"tags\": [\"deployment\", \"node\", \"demo\", \"climbing\", \"booking\", \"priya\"],\n  \"reminders\": [\n    {\n      \"text\": \"Bump Node version\",\n      \"datetime\": \"2023-12-12T00:00:00Z\"\n    },\n    {\n      \"text\": \"Book car for climbing trip\",\n      \"datetime\": \"2023-12-20T00:00:00Z\"\n    }\n  ]\n}"
+  }
+}

@@ -266,7 +266,12 @@ class VoiceNoteApp(App):
             if note.get("reminders"):
                 rem_module.schedule_reminders(note["reminders"], note["title"])
                 for r in note["reminders"]:
-                    self._log(f"Reminder set: {r['text']} @ {r['datetime']}")
+                    # .get, not [] -- `_parse` validates that the `reminders`
+                    # key exists, never the shape of the items inside it, and a
+                    # model omitting "datetime" would otherwise raise here,
+                    # after the note was already written to disk.
+                    when = r.get("datetime") or "no date given"
+                    self._log(f"Reminder set: {r.get('text', 'Reminder')} @ {when}")
 
             self._set_state("done")
 
