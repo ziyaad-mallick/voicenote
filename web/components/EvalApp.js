@@ -375,22 +375,77 @@ export default function EvalApp({ data }) {
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2 max-w-3xl">
           <div className="border rule rounded-md p-4">
-            <h4 className="text-[11px] uppercase tracking-wider dim mb-2">Cause 1 — hallucinated year</h4>
+            <h4 className="text-[11px] uppercase tracking-wider dim mb-2">Cause 1 — hallucinated year <span className="normal-case tracking-normal">(fixed)</span></h4>
             <p className="text-sm leading-relaxed">
-              The prompt never tells the model today&apos;s date. “Friday the 5th of September”
-              comes back as <Mono className="text-[13px]">2023-09-05T00:00:00Z</Mono>, years in the
-              past, so the delay is negative and the toast fires on save.
+              The prompt never told the model today&apos;s date. “Friday the 5th of September”
+              came back as <Mono className="text-[13px]">2023-09-05T00:00:00Z</Mono>, years in the
+              past, so the delay was negative and the toast fired on save. The prompt now carries
+              the current time and requires an absolute ISO-8601 timestamp with an explicit year.
             </p>
           </div>
           <div className="border rule rounded-md p-4">
-            <h4 className="text-[11px] uppercase tracking-wider dim mb-2">Cause 2 — unparseable prose</h4>
+            <h4 className="text-[11px] uppercase tracking-wider dim mb-2">Cause 2 — a zero delay reached three ways <span className="normal-case tracking-normal">(fixed)</span></h4>
             <p className="text-sm leading-relaxed">
               “tomorrow morning” and “in two weeks” are not resolved by{' '}
-              <Mono className="text-[13px]">dateutil.parser.parse(..., fuzzy=True)</Mono>.{' '}
-              <Mono className="text-[13px]">reminders.py</Mono> swallows the exception and leaves
-              the delay at zero.
+              <Mono className="text-[13px]">dateutil.parser.parse(..., fuzzy=True)</Mono>, and{' '}
+              <Mono className="text-[13px]">reminders.py</Mono> swallowed the exception, leaving
+              the delay at zero — the same zero an absent datetime and a past one produced.{' '}
+              It now classifies and routes: schedule only <Mono className="text-[13px]">future</Mono>,
+              toast only <Mono className="text-[13px]">past</Mono>, stay silent for the rest.
             </p>
           </div>
+        </div>
+
+        <div className="mt-8 max-w-3xl border rule rounded-md p-5">
+          <h4 className="text-[11px] uppercase tracking-wider dim mb-3">
+            Before → after, same 8 cases, same model
+          </h4>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-left dim">
+                  <th className="py-1 pr-4 font-normal">Metric</th>
+                  <th className="py-1 pr-4 font-normal">Before</th>
+                  <th className="py-1 font-normal">After</th>
+                </tr>
+              </thead>
+              <tbody className="font-mono text-[13px]">
+                <tr><td className="py-1 pr-4">datetime accuracy</td><td className="py-1 pr-4">0.250</td><td className="py-1">0.875</td></tr>
+                <tr><td className="py-1 pr-4">reminder precision</td><td className="py-1 pr-4">0.800</td><td className="py-1">1.000</td></tr>
+                <tr><td className="py-1 pr-4">reminder recall</td><td className="py-1 pr-4">0.667</td><td className="py-1">0.889</td></tr>
+                <tr><td className="py-1 pr-4">category accuracy</td><td className="py-1 pr-4">1.000</td><td className="py-1">0.857</td></tr>
+                <tr><td className="py-1 pr-4">n_scored</td><td className="py-1 pr-4">6</td><td className="py-1">7</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-4 text-sm leading-relaxed">
+            Category accuracy <strong>regressed</strong>, and it is listed rather than omitted.
+            One case moved from <Mono className="text-[13px]">Ideas</Mono> to{' '}
+            <Mono className="text-[13px]">Projects</Mono>; the added prompt text is all deadlines
+            and tasks, which plausibly tilted a product reflection toward the work category. At
+            n=7 a single case is 14 points, and that label is the most contestable in the set.
+          </p>
+        </div>
+
+        <div
+          className="mt-6 max-w-3xl border-l-2 pl-5 py-1"
+          style={{ borderColor: 'var(--rule-strong)' }}
+        >
+          <h4 className="text-[11px] uppercase tracking-wider dim mb-2">
+            The number went up and the metric went blind
+          </h4>
+          <p className="text-sm leading-relaxed">
+            <Mono className="text-[13px]">datetime_state</Mono> has three states and{' '}
+            <Mono className="text-[13px]">future</Mono> is one of them, so it answers “can the
+            scheduler use this string” — the right question while the answer was usually “no”. It
+            cannot answer “is this the right moment”. Today is Thursday 2026-08-27. For “next
+            Monday” the model emits <Mono className="text-[13px]">2026-08-30</Mono> — a Sunday, and
+            the wrong one. For “in two weeks” it emits{' '}
+            <Mono className="text-[13px]">2026-09-14</Mono>, four days late. Both score as correct.
+            0.875 is an honest measurement of a question that stopped being the interesting one the
+            moment the fix landed; date-exactness against a labelled moment is what this harness
+            needs next.
+          </p>
         </div>
       </Section>
 

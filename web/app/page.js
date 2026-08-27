@@ -10,7 +10,7 @@ function Header() {
         voicenote — evaluation harness
       </p>
       <h1 className="mt-4 text-3xl sm:text-4xl font-semibold tracking-tight max-w-3xl leading-tight">
-        The reminders worked. They just all fired at the wrong time.
+        The metric found the bug. Fixing the bug made the metric blind.
       </h1>
       <p className="mt-5 max-w-3xl leading-relaxed">
         <strong>voicenote</strong> is a local-only voice-to-structured-note tool: microphone →
@@ -28,6 +28,13 @@ function Header() {
           <span className="font-mono text-[13px]">evals/</span> harness — a recorded run, replayed,
           re-scored in your browser — and the scheduling bug the harness&apos;s metric design
           exposed.
+        </p>
+        <p className="mt-3 leading-relaxed">
+          <strong>The bug is fixed, and the numbers below are the run after the fix.</strong>{' '}
+          Datetime accuracy went 0.250 → 0.875 and reminder precision 0.800 → 1.000. The more
+          useful result is what that exposed: the metric answers “can the scheduler use this
+          string”, never “is this the right moment”, and now that everything parses, that is the
+          only question left.
         </p>
       </div>
     </header>

@@ -35,16 +35,16 @@ test("PARITY: per_case deep-equals evals/baseline.json", () => {
 
 test("PARITY: aggregates match what `python -m evals.run` reports", () => {
   const result = scoreAll(data.cases);
-  assert.deepStrictEqual(result.reminder_counts, { tp: 6, fp: 1, fn: 3 });
+  assert.deepStrictEqual(result.reminder_counts, { tp: 8, fp: 0, fn: 1 });
   assert.deepStrictEqual(result.datetime_breakdown, {
     absent: 0,
-    unparseable_or_past: 5,
-    future: 1,
+    unparseable_or_past: 1,
+    future: 7,
   });
-  assert.equal(result.metrics.reminder_precision, 0.8571);
-  assert.equal(result.metrics.reminder_recall, 0.6667);
-  assert.equal(result.metrics.datetime_accuracy, 0.1667);
-  assert.equal(result.metrics.category_accuracy, 1.0);
+  assert.equal(result.metrics.reminder_precision, 1.0);
+  assert.equal(result.metrics.reminder_recall, 0.8889);
+  assert.equal(result.metrics.datetime_accuracy, 0.875);
+  assert.equal(result.metrics.category_accuracy, 0.8571);
   assert.equal(result.metrics.schema_conformance, 1.0);
   assert.equal(result.metrics.fallback_rate, 0.125);
   assert.equal(result.n_cases, 8);
@@ -145,12 +145,13 @@ test("has_datetime scores HIGHER than three_state on this corpus", () => {
     hasDatetime > threeState,
     `has_datetime (${hasDatetime}) should exceed three_state (${threeState})`
   );
-  // Every one of the 6 matched reminders carries a non-empty datetime string,
-  // so the naive metric calls all 6 correct -- including the hallucinated 2023
-  // dates and the unparseable prose that fire a toast the instant the note is
-  // saved.
+  // Every matched reminder carries a non-empty datetime string, so the naive
+  // metric calls them all correct. It did so before the prompt fix, when that
+  // meant crediting hallucinated 2023 dates, and it still does now: the gap is
+  // narrower (1.000 vs 0.875) but it has not closed, and the one case it still
+  // overstates is the one that would fire a toast on save.
   assert.equal(hasDatetime, 1.0);
-  assert.equal(threeState, 0.1667);
+  assert.equal(threeState, 0.875);
 });
 
 test("the toggle changes only datetime accuracy", () => {
