@@ -1,0 +1,298 @@
+{
+  "pinned_now": "2026-08-27T12:00:00+00:00",
+  "case_set_hash": "89e2610c9cb5c8c0",
+  "prompt_sha": "36def19b6e79ef04",
+  "categories": [
+    "Projects",
+    "Ideas",
+    "Uni",
+    "Personal"
+  ],
+  "cases": [
+    {
+      "id": "deadline-explicit-01",
+      "label_status": "approved",
+      "transcript": "Right, note for the Kepler project. I need to send the invoice to Marcus by Friday the 5th of September, and before that I should double check the hours in the timesheet because I think I undercounted the Tuesday session.",
+      "notes": "Two obligations, one explicitly dated, one ordered relative to it ('before that'). PROPOSED: does the second one count as a reminder, or is it a sub-task of the first? This is a labelling judgement, not a model question.",
+      "expected": {
+        "category": "Projects",
+        "reminders": [
+          {
+            "text": "send the invoice to Marcus",
+            "datetime_state": "future"
+          },
+          {
+            "text": "double check the hours in the timesheet",
+            "datetime_state": "future"
+          }
+        ]
+      },
+      "outcome": "scored",
+      "predicted": {
+        "title": "Kepler Project Invoice Reminder",
+        "category": "Projects",
+        "summary": "Invoice to Marcus due by September 5th; verify timesheet hours for Tuesday session.",
+        "tags": [
+          "kepler-project",
+          "invoice",
+          "timesheet",
+          "deadline",
+          "task"
+        ],
+        "category_coerced": false,
+        "reminders": [
+          {
+            "text": "Send invoice to Marcus",
+            "datetime": "2023-09-05T00:00:00Z",
+            "datetime_state": "unparseable_or_past"
+          }
+        ]
+      },
+      "raw_response": "{\n  \"title\": \"Kepler Project Invoice Reminder\",\n  \"category\": \"Projects\",\n  \"summary\": \"Invoice to Marcus due by September 5th; verify timesheet hours for Tuesday session.\",\n  \"body\": \"### Kepler Project Tasks\\n- **Invoice Deadline**: Send invoice to Marcus by **Friday, September 5th**.\\n- **Timesheet Check**: Before the deadline, double-check Tuesday session hours in the timesheet. Suspect undercounting may occur.\\n\\nEnsure all entries are accurate to avoid billing discrepancies.\",\n  \"tags\": [\"kepler-project\", \"invoice\", \"timesheet\", \"deadline\", \"task\"],\n  \"reminders\": [\n    {\n      \"text\": \"Send invoice to Marcus\",\n      \"datetime\": \"2023-09-05T00:00:00Z\"\n    }\n  ]\n}"
+    },
+    {
+      "id": "deadline-relative-01",
+      "label_status": "approved",
+      "transcript": "Don't forget I need to email the department about the extension request next Monday, and the reading list has to be finalised in two weeks.",
+      "notes": "Relative dates. EXPECT THIS TO FAIL, and the failure is a real product bug, not a metric miss: reminders.py parses with dateutil, which does not understand 'next' - 'next Monday 9am' resolves to 09:00 TODAY, which is in the past by mid-morning, which fires the toast immediately. Labelled 'future' because that is what SHOULD happen.",
+      "expected": {
+        "category": "Uni",
+        "reminders": [
+          {
+            "text": "email the department about the extension request",
+            "datetime_state": "future"
+          },
+          {
+            "text": "finalise the reading list",
+            "datetime_state": "future"
+          }
+        ]
+      },
+      "outcome": "scored",
+      "predicted": {
+        "title": "Extension Request and Reading List Deadline",
+        "category": "Uni",
+        "summary": "Need to email the department for an extension request by next Monday and finalize the reading list within two weeks.",
+        "tags": [
+          "extension-request",
+          "reading-list",
+          "deadline",
+          "email",
+          "university",
+          "task"
+        ],
+        "category_coerced": false,
+        "reminders": [
+          {
+            "text": "Email the department about the extension request",
+            "datetime": "next Monday",
+            "datetime_state": "future"
+          },
+          {
+            "text": "Finalize the reading list",
+            "datetime": "in two weeks",
+            "datetime_state": "unparseable_or_past"
+          }
+        ]
+      },
+      "raw_response": "{\n  \"title\": \"Extension Request and Reading List Deadline\",\n  \"category\": \"Uni\",\n  \"summary\": \"Need to email the department for an extension request by next Monday and finalize the reading list within two weeks.\",\n  \"body\": \"### Tasks\\n- Email the department regarding the extension request by **next Monday**.\\n- Finalize the reading list within **two weeks**.\",\n  \"tags\": [\"extension-request\", \"reading-list\", \"deadline\", \"email\", \"university\", \"task\"],\n  \"reminders\": [\n    {\n      \"text\": \"Email the department about the extension request\",\n      \"datetime\": \"next Monday\"\n    },\n    {\n      \"text\": \"Finalize the reading list\",\n      \"datetime\": \"in two weeks\"\n    }\n  ]\n}"
+    },
+    {
+      "id": "no-deadline-negative-01",
+      "label_status": "approved",
+      "transcript": "I've been thinking about why the onboarding flow feels wrong. It's not the number of steps, it's that step three asks for something the user has no reason to care about yet. You have to earn the right to ask for a phone number.",
+      "notes": "THE most important case in the set. Pure reflection, zero obligations. Any reminder extracted here is a false positive, and a false positive fires a Windows toast at the user. If precision drops, it drops here first.",
+      "expected": {
+        "category": "Ideas",
+        "reminders": []
+      },
+      "outcome": "scored",
+      "predicted": {
+        "title": "Onboarding Flow: Early Phone Number Step",
+        "category": "Ideas",
+        "summary": "The onboarding flow feels wrong because step three asks for a phone number too early, making users lose interest.",
+        "tags": [
+          "onboarding",
+          "flow",
+          "phone-number",
+          "user-experience",
+          "steps",
+          "early-request"
+        ],
+        "category_coerced": false,
+        "reminders": []
+      },
+      "raw_response": "{\n  \"title\": \"Onboarding Flow: Early Phone Number Step\",\n  \"category\": \"Ideas\",\n  \"summary\": \"The onboarding flow feels wrong because step three asks for a phone number too early, making users lose interest.\",\n  \"body\": \"## Key Insight\\nThe onboarding flow feels wrong not due to the number of steps, but because step three asks for a phone number prematurely. Users shouldn't be required to provide a phone number until they've earned the right to do so.\\n\\n### Problem\\nRequesting a phone number too early in the process creates friction. Users have no context or incentive to care about the phone number at this stage.\\n\\n### Solution\\nDelay asking for a phone number until later steps when users have established value in the product. Earn the right to collect sensitive data incrementally.\",\n  \"tags\": [\"onboarding\", \"flow\", \"phone-number\", \"user-experience\", \"steps\", \"early-request\"],\n  \"reminders\": []\n}"
+    },
+    {
+      "id": "no-deadline-negative-02",
+      "label_status": "approved",
+      "transcript": "Reminder to self, that Thai place on Cowley Road was genuinely excellent. The one with the green front. Worth going back.",
+      "notes": "Adversarial negative. Contains the literal words 'reminder to self' and 'worth going back', which look like an obligation and are not one. No date, no action the user must take. PROPOSED: reasonable people could disagree here - if you think 'go back to the Thai place' IS a reminder, say so and the label flips.",
+      "expected": {
+        "category": "Personal",
+        "reminders": []
+      },
+      "outcome": "scored",
+      "predicted": {
+        "title": "Thai Restaurant Cowley Road Excellent",
+        "category": "Personal",
+        "summary": "Excellent Thai restaurant on Cowley Road with green front facade deserves a return visit.",
+        "tags": [
+          "thai restaurant",
+          "cowley road",
+          "excellent food",
+          "return visit",
+          "reminder"
+        ],
+        "category_coerced": false,
+        "reminders": [
+          {
+            "text": "Return to Thai restaurant on Cowley Road",
+            "datetime": "next Monday 9am",
+            "datetime_state": "future"
+          }
+        ]
+      },
+      "raw_response": "{\n  \"title\": \"Thai Restaurant Cowley Road Excellent\",\n  \"category\": \"Personal\",\n  \"summary\": \"Excellent Thai restaurant on Cowley Road with green front facade deserves a return visit.\",\n  \"body\": \"## Thai Restaurant Reminder\\n\\nThe Thai restaurant located on Cowley Road featuring a green front facade provided an exceptional dining experience. Highly recommended for its quality cuisine and ambiance.\\n\\n**Key Details:**\\n- Located on Cowley Road\\n- Distinctive green front exterior\\n- Excellent food and service\\n- Worth revisiting soon\",\n  \"tags\": [\"thai restaurant\", \"cowley road\", \"excellent food\", \"return visit\", \"reminder\"],\n  \"reminders\": [\n    {\n      \"text\": \"Return to Thai restaurant on Cowley Road\",\n      \"datetime\": \"next Monday 9am\"\n    }\n  ]\n}"
+    },
+    {
+      "id": "ollama-unreachable-01",
+      "label_status": "approved",
+      "transcript": "Quick note about the grant application, the deadline moved to the 30th and I need to rewrite the methods section before then.",
+      "notes": "Ollama down. Asserts the fallback fires and the raw transcript survives. expected.reminders is [] because _fallback returns [] by construction - this case is scored for FALLBACK BEHAVIOUR, not for extraction quality, and the runner excludes it from precision/recall so it cannot poison them.",
+      "expected": {
+        "category": "Uni",
+        "reminders": []
+      },
+      "outcome": "fallback_transport",
+      "predicted": {
+        "title": "Quick note about the grant application, the deadline moved t",
+        "category": "Projects",
+        "summary": "Quick note about the grant application, the deadline moved to the 30th and I need to rewrite the methods section before ",
+        "tags": [],
+        "category_coerced": false,
+        "reminders": []
+      },
+      "raw_response": null
+    },
+    {
+      "id": "rambling-two-topics-01",
+      "label_status": "approved",
+      "transcript": "Okay so two things. First the deployment, the staging box is still on the old node version and that's why the build broke on Thursday, someone needs to bump it, probably me, before the demo on the 12th. Second, completely unrelated, I keep meaning to ask Priya whether she's still up for the climbing thing, and I should book the car for the weekend of the 20th if she is.",
+      "notes": "Two unrelated topics in one note. Tests whether the model drops the second half. PROPOSED and contestable on two counts: (1) the category, since this is half Projects and half Personal and only one label is allowed; (2) whether 'ask Priya' is a reminder at all given it has no date - I labelled it 'absent' rather than dropping it, which means the model is expected to extract it AND expected to leave the datetime empty.",
+      "expected": {
+        "category": "Projects",
+        "reminders": [
+          {
+            "text": "bump the staging node version",
+            "datetime_state": "future"
+          },
+          {
+            "text": "ask Priya about climbing",
+            "datetime_state": "absent"
+          },
+          {
+            "text": "book the car",
+            "datetime_state": "future"
+          }
+        ]
+      },
+      "outcome": "scored",
+      "predicted": {
+        "title": "Deployment & Climbing Plans",
+        "category": "Projects",
+        "summary": "Fix Node version before demo on 12th; book car for climbing trip on 20th.",
+        "tags": [
+          "deployment",
+          "node",
+          "demo",
+          "climbing",
+          "booking",
+          "priya"
+        ],
+        "category_coerced": false,
+        "reminders": [
+          {
+            "text": "Bump Node version",
+            "datetime": "2023-12-12T00:00:00Z",
+            "datetime_state": "unparseable_or_past"
+          },
+          {
+            "text": "Book car for climbing trip",
+            "datetime": "2023-12-20T00:00:00Z",
+            "datetime_state": "unparseable_or_past"
+          }
+        ]
+      },
+      "raw_response": "{\n  \"title\": \"Deployment & Climbing Plans\",\n  \"category\": \"Projects\",\n  \"summary\": \"Fix Node version before demo on 12th; book car for climbing trip on 20th.\",\n  \"body\": \"### Deployment Issue\\n- Staging box uses old Node version causing build break on Thursday\\n- Need to **bump Node version** before demo on **2023-12-12**\\n\\n### Climbing Trip\\n- Ask Priya if she's still up for the climbing trip\\n- Book car for weekend of **2023-12-20** if confirmed\",\n  \"tags\": [\"deployment\", \"node\", \"demo\", \"climbing\", \"booking\", \"priya\"],\n  \"reminders\": [\n    {\n      \"text\": \"Bump Node version\",\n      \"datetime\": \"2023-12-12T00:00:00Z\"\n    },\n    {\n      \"text\": \"Book car for climbing trip\",\n      \"datetime\": \"2023-12-20T00:00:00Z\"\n    }\n  ]\n}"
+    },
+    {
+      "id": "short-transcript-01",
+      "label_status": "approved",
+      "transcript": "Buy milk.",
+      "notes": "Three words. Tests that a tiny input does not produce a hallucinated title, summary and tag set. SIGNED OFF by Ziyaad: this IS a reminder, with datetime_state 'absent'. Note the consequence -- reminders.py fires a dateless reminder immediately (delay computes to 0), so the correct label and the current behaviour disagree. That gap is a product bug this case now pins down, not a labelling error.",
+      "expected": {
+        "category": "Personal",
+        "reminders": [
+          {
+            "text": "buy milk",
+            "datetime_state": "absent"
+          }
+        ]
+      },
+      "outcome": "scored",
+      "predicted": {
+        "title": "Buy Milk",
+        "category": "Personal",
+        "summary": "Reminder to purchase milk from the store.",
+        "tags": [
+          "shopping",
+          "groceries",
+          "milk",
+          "todo"
+        ],
+        "category_coerced": false,
+        "reminders": []
+      },
+      "raw_response": "{\n  \"title\": \"Buy Milk\",\n  \"category\": \"Personal\",\n  \"summary\": \"Reminder to purchase milk from the store.\",\n  \"body\": \"# Tasks\\n- Purchase milk from the store.\",\n  \"tags\": [\"shopping\", \"groceries\", \"milk\", \"todo\"],\n  \"reminders\": []\n}"
+    },
+    {
+      "id": "short-transcript-02",
+      "label_status": "approved",
+      "transcript": "Call the dentist tomorrow morning.",
+      "notes": "Four words plus a date. The minimal positive case - contrast with short-transcript-01, which is the same length with no date.",
+      "expected": {
+        "category": "Personal",
+        "reminders": [
+          {
+            "text": "call the dentist",
+            "datetime_state": "future"
+          }
+        ]
+      },
+      "outcome": "scored",
+      "predicted": {
+        "title": "Dentist Appointment",
+        "category": "Personal",
+        "summary": "Schedule a dentist appointment for tomorrow morning.",
+        "tags": [
+          "dentist",
+          "appointment",
+          "tomorrow",
+          "task",
+          "health"
+        ],
+        "category_coerced": false,
+        "reminders": [
+          {
+            "text": "Call the dentist",
+            "datetime": "tomorrow morning",
+            "datetime_state": "unparseable_or_past"
+          }
+        ]
+      },
+      "raw_response": "{\n  \"title\": \"Dentist Appointment\",\n  \"category\": \"Personal\",\n  \"summary\": \"Schedule a dentist appointment for tomorrow morning.\",\n  \"body\": \"**Task**\\\\nCall the dentist tomorrow morning.\",\n  \"tags\": [\"dentist\", \"appointment\", \"tomorrow\", \"task\", \"health\"],\n  \"reminders\": [\n    {\n      \"text\": \"Call the dentist\",\n      \"datetime\": \"tomorrow morning\"\n    }\n  ]\n}"
+    }
+  ]
+}
